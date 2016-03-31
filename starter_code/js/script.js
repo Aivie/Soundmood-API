@@ -15,7 +15,7 @@
 // # Initialize the Soundcloud API client with our client ID
 //
 SC.initialize({
-  client_id: 'TODO: Replace this with your client_id'
+  client_id: '7fd2715456d322ce77c136b25dab3d3d'
 });
 
 
@@ -32,6 +32,12 @@ SC.initialize({
 //
 $(document).ready(function() {
   // Add click handlers to 'go' and 'random' buttons here.
+  $("#go").click(function(){
+    goClicked();
+  });
+  $("#random").click(function(){
+    randomClicked();
+  });
 });
 
 
@@ -50,6 +56,8 @@ $(document).ready(function() {
 //
 function goClicked() {
   // TODO: fill this out
+  var mood = $("#mood").val();
+  searchTracks(mood);
 }
 
 //
@@ -62,8 +70,18 @@ function goClicked() {
 //
 // * **mood**, the user's mood.
 //
+
 function searchTracks(mood) {
   // TODO: fill this out
+    SC.get(
+    '/tracks', 
+    {q: mood, limit: 50},
+    function(tracks) {
+      console.log(tracks);
+      
+    }
+    );
+  updateJumboTron(mood);
 }
 
 //
@@ -80,6 +98,16 @@ var currentSong = null; // The song that is currently playing
 function playTrack(trackid) {
   if (currentSong != null) {
     // TODO: stop the current song
+    SC.stream('tracks/'+trackid, function(player) {
+      player.play();
+      player.pause();
+      player.finish();
+      player.seek(time);
+      player.currentTime();
+      player.setVolume(volume);
+      player.getVolume;
+      player.on(event,handler);
+    }) 
   }
   // TODO: stream the track based on the given id and update 'currentSong'.
 }
@@ -119,7 +147,7 @@ function randomClicked() {
 // Returns a random mood from moodList.
 //
 // TODO: add moods to this list
-var moodList = [];
+var moodList = ["happy","sad","angry","awesome"];
 function randomMood() {
   // TODO: fill this out
 }
